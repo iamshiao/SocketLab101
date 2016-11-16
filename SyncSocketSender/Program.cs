@@ -19,24 +19,27 @@ namespace SyncSocketSender
                 try {
                     SenderSite ss = new SenderSite();
                     Socket sender = ss.Connect("127.0.0.1", 11000);
-                    //ss.SendStr(sender, "Test");
-                    //ss.SendFile(sender, @"C:\Users\Administrator\Pictures\3116.jpg");
-                    List<string> paths = new List<string> {
-                        @"C:\Users\Administrator\Pictures\3116.jpg",
-                        @"C:\Users\Administrator\Pictures\pika.jpg"
-                    };
-                    ss.SendFiles(sender, paths);
+                    ss.SendStr(sender, "Test");
+
+                    //ss.SendFile(sender, @"C:\Users\Administrator\Pictures\x.jpg");
+
+                    //List<string> paths = new List<string> {
+                    //    @"C:\Users\Administrator\Pictures\x.jpg",
+                    //    @"C:\Users\Administrator\Pictures\y.jpg"
+                    //};
+                    //ss.SendFiles(sender, paths);
+
                     SocketPack pack = ss.Recv(sender);
                     if (pack.DataType == "String") {
                         string msg = Encoding.UTF8.GetString(pack.DataBody);
-                        Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss") } - {msg}");
+                        Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss") } - Msg from Server: {msg}");
                     }
                 }
                 catch (Exception) {
-                    Console.WriteLine($"Error count {++errorCount}.");
+                    Console.WriteLine($"Error count: {++errorCount}.");
                 }
 
-                Thread.Sleep(new Random(DateTime.Now.Second).Next(1, 7) * 100);
+                Thread.Sleep(new Random(DateTime.Now.Second).Next(1, 7) * 200);
             }
 
             Console.ReadLine();
