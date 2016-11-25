@@ -12,12 +12,12 @@ namespace SyncSocketListener
 {
     class Program
     {
-        static Thread _lt;
+        static Task _task;
 
         static void Main(string[] args)
         {
             NetworkChange.NetworkAvailabilityChanged += (sender, e) => {
-                if (e.IsAvailable && _lt == null) {
+                if (e.IsAvailable && _task == null) {
                     SetListener();
                 }
             };
@@ -54,11 +54,9 @@ namespace SyncSocketListener
                 }
             };
 
-            _lt = new Thread(new ThreadStart(() => {
+            _task = Task.Factory.StartNew(() => {
                 ls.Activate("127.0.0.1", 11000);
-            }));
-            _lt.IsBackground = true;
-            _lt.Start();
+            });
         }
     }
 }
